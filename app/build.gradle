@@ -1,7 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace 'com.dantsu.thermalprinter' // Add this line with your app's package name
     compileSdkVersion 33
+
     defaultConfig {
         applicationId "com.dantsu.thermalprinter"
         minSdkVersion 16
@@ -10,10 +12,12 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     buildTypes {
         release {
             minifyEnabled false
