@@ -4,7 +4,7 @@ plugins {
 }
 
 def libraryVersionCode = 3003000
-def libraryVersionName = "3.4.6"
+def libraryVersionName = "3.4.7"
 
 android {
     namespace 'com.dantsu.thermalprinter'
@@ -13,8 +13,6 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode libraryVersionCode
-        versionName libraryVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -28,8 +26,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_21
-        targetCompatibility JavaVersion.VERSION_21
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 
