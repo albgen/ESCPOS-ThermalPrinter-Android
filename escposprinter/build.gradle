@@ -4,7 +4,7 @@ plugins {
 }
 
 def libraryVersionCode = 3003000
-def libraryVersionName = "3.4.3"
+def libraryVersionName = "3.4.4"
 
 android {
     namespace 'com.dantsu.thermalprinter'
@@ -43,7 +43,6 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:3.6.1"
 }
 
-
 afterEvaluate {
     publishing {
         publications {
@@ -57,6 +56,7 @@ afterEvaluate {
                     description = 'Useful library to help Android developers to print with (Bluetooth, TCP, USB) ESC/POS thermal printers.'
                 }
 
+                // Use the AAR file as the artifact for the library
                 artifact("$buildDir/outputs/aar/${project.name}-release.aar")
             }
         }
@@ -66,5 +66,10 @@ afterEvaluate {
                 url = uri("$buildDir/repo")
             }
         }
+    }
+
+    // Ensure task dependencies are explicitly declared
+    tasks.named("publishReleasePublicationToMavenLocal").configure {
+        dependsOn("bundleReleaseAar")
     }
 }
