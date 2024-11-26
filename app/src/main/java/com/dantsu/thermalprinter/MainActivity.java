@@ -29,6 +29,7 @@ import com.dantsu.escposprinter.connection.tcp.TcpConnection;
 import com.dantsu.escposprinter.connection.usb.UsbConnection;
 import com.dantsu.escposprinter.connection.usb.UsbPrintersConnections;
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
+import com.dantsu.thermalprinter.app.R;
 import com.dantsu.thermalprinter.async.AsyncBluetoothEscPosPrint;
 import com.dantsu.thermalprinter.async.AsyncEscPosPrint;
 import com.dantsu.thermalprinter.async.AsyncEscPosPrinter;
@@ -44,14 +45,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Button button = (Button) this.findViewById(R.id.button_bluetooth_browse);
+        setContentView(com.dantsu.thermalprinter.app.R.layout.activity_main);
+        Button button = (Button) this.findViewById(com.dantsu.thermalprinter.app.R.id.button_bluetooth_browse);
         button.setOnClickListener(view -> browseBluetoothDevice());
-        button = (Button) findViewById(R.id.button_bluetooth);
+        button = (Button) findViewById(com.dantsu.thermalprinter.app.R.id.button_bluetooth);
         button.setOnClickListener(view -> printBluetooth());
-        button = (Button) this.findViewById(R.id.button_usb);
+        button = (Button) this.findViewById(com.dantsu.thermalprinter.app.R.id.button_usb);
         button.setOnClickListener(view -> printUsb());
-        button = (Button) this.findViewById(R.id.button_tcp);
+        button = (Button) this.findViewById(com.dantsu.thermalprinter.app.R.id.button_tcp);
         button.setOnClickListener(view -> printTcp());
 
     }
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             selectedDevice = bluetoothDevicesList[index];
                         }
-                        Button button = (Button) findViewById(R.id.button_bluetooth_browse);
+                        Button button = (Button) findViewById(com.dantsu.thermalprinter.app.R.id.button_bluetooth_browse);
                         button.setText(items[i1]);
                     }
                 );
@@ -224,8 +225,8 @@ public class MainActivity extends AppCompatActivity {
     ==============================================================================================*/
 
     public void printTcp() {
-        final EditText ipAddress = (EditText) this.findViewById(R.id.edittext_tcp_ip);
-        final EditText portAddress = (EditText) this.findViewById(R.id.edittext_tcp_port);
+        final EditText ipAddress = (EditText) this.findViewById(com.dantsu.thermalprinter.app.R.id.edittext_tcp_ip);
+        final EditText portAddress = (EditText) this.findViewById(com.dantsu.thermalprinter.app.R.id.edittext_tcp_port);
 
         try {
             new AsyncTcpEscPosPrint(
