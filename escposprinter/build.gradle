@@ -4,7 +4,7 @@ plugins {
 }
 
 def libraryVersionCode = 3003000
-def libraryVersionName = "3.4.1"
+def libraryVersionName = "3.4.2"
 
 android {
     namespace 'com.dantsu.thermalprinter'
