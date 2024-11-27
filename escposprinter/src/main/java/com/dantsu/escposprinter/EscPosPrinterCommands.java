@@ -577,25 +577,60 @@ public class EscPosPrinterCommands {
     }
 
     /**
-     * Print image with the connected printer.
+     * Print an image with the connected printer.
      *
-     * @param image Bytes contain the image in ESC/POS command
+     * This method sends the image data to the printer, allowing dynamic control
+     * over the chunk size for data transmission. If no chunk size is provided,
+     * the entire image is sent by default.
+     *
+     * @param image Bytes containing the image in ESC/POS format
+     * @param chunkSize Number of bytes to send per chunk. Default is 0 (sends entire image).
      * @return Fluent interface
+     * @throws EscPosConnectionException If the printer is not connected or data transmission fails
      */
-    public EscPosPrinterCommands printImage(byte[] image) throws EscPosConnectionException {
+    public EscPosPrinterCommands printImage(byte[] image, int chunkSize) throws EscPosConnectionException {
         if (!this.printerConnection.isConnected()) {
             return this;
         }
 
-        byte[][] bytesToPrint = this.useEscAsteriskCommand ? EscPosPrinterCommands.convertGSv0ToEscAsterisk(image) : new byte[][]{image};
+        byte[][] bytesToPrint = this.useEscAsteriskCommand
+                ? EscPosPrinterCommands.convertGSv0ToEscAsterisk(image)
+                : new byte[][]{image};
 
         for (byte[] bytes : bytesToPrint) {
-            this.printerConnection.write(bytes);
-            this.printerConnection.send();
+            if (chunkSize <= 0 || chunkSize >= bytes.length) {
+                // Send the whole array if chunkSize is invalid or larger than the array
+                this.printerConnection.write(bytes);
+                this.printerConnection.send();
+            } else {
+                // Send in chunks
+                for (int i = 0; i < bytes.length; i += chunkSize) {
+                    int length = Math.min(chunkSize, bytes.length - i);
+                    byte[] chunk = new byte[length];
+                    System.arraycopy(bytes, i, chunk, 0, length);
+                    this.printerConnection.write(chunk);
+                    this.printerConnection.send();
+                }
+            }
         }
 
         return this;
     }
+
+    /**
+     * Print an image with the connected printer using the default chunk size.
+     *
+     * This method sends the entire image in one operation, maintaining
+     * the original method behavior.
+     *
+     * @param image Bytes containing the image in ESC/POS format
+     * @return Fluent interface
+     * @throws EscPosConnectionException If the printer is not connected or data transmission fails
+     */
+    public EscPosPrinterCommands printImage(byte[] image) throws EscPosConnectionException {
+        return this.printImage(image, 0); // Default chunk size sends the entire image
+    }
+
 
     /**
      * Print a barcode with the connected printer.
