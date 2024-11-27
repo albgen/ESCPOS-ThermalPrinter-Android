@@ -83,6 +83,8 @@ public class EscPosPrinterCommands {
     private EscPosCharsetEncoding charsetEncoding;
     private boolean useEscAsteriskCommand;
 
+    private static final int DEFAULT_CHUNK_SIZE = 32; // Default chunk size 32 bytes
+    private int chunkSize = DEFAULT_CHUNK_SIZE;       // Current chunk size with default
 
     public static byte[] initGSv0Command(int bytesByLine, int bitmapHeight) {
         int
@@ -577,16 +579,47 @@ public class EscPosPrinterCommands {
     }
 
     /**
-     * Print an image with the connected printer.
+     * Get the current chunk size for printing images.
      *
-     * This method sends the image data to the printer, allowing dynamic control
-     * over the chunk size for data transmission. If no chunk size is provided,
-     * the entire image is sent by default.
+     * @return Current chunk size.
+     */
+    public int getChunkSize() {
+        return this.chunkSize;
+    }
+
+    /**
+     * Set the chunk size for printing images.
      *
-     * @param image Bytes containing the image in ESC/POS format
-     * @param chunkSize Number of bytes to send per chunk. Default is 0 (sends entire image).
-     * @return Fluent interface
-     * @throws EscPosConnectionException If the printer is not connected or data transmission fails
+     * @param chunkSize Number of bytes to send per chunk.
+     *                  Must be greater than 0, otherwise defaults to DEFAULT_CHUNK_SIZE.
+     */
+    public void setChunkSize(int chunkSize) {
+        if (chunkSize <= 0) {
+            this.chunkSize = DEFAULT_CHUNK_SIZE;
+        } else {
+            this.chunkSize = chunkSize;
+        }
+    }
+
+    /**
+     * Print an image with the connected printer using the instance-level chunk size.
+     *
+     * @param image Bytes containing the image in ESC/POS format.
+     * @return Fluent interface.
+     * @throws EscPosConnectionException If the printer is not connected or data transmission fails.
+     */
+    public EscPosPrinterCommands printImage(byte[] image) throws EscPosConnectionException {
+        return this.printImage(image, this.chunkSize);
+    }
+
+    /**
+     * Print an image with the connected printer, allowing a custom chunk size.
+     *
+     * @param image Bytes containing the image in ESC/POS format.
+     * @param chunkSize Number of bytes to send per chunk.
+     *                  If 0 or less, the entire image is sent.
+     * @return Fluent interface.
+     * @throws EscPosConnectionException If the printer is not connected or data transmission fails.
      */
     public EscPosPrinterCommands printImage(byte[] image, int chunkSize) throws EscPosConnectionException {
         if (!this.printerConnection.isConnected()) {
@@ -615,20 +648,6 @@ public class EscPosPrinterCommands {
         }
 
         return this;
-    }
-
-    /**
-     * Print an image with the connected printer using the default chunk size.
-     *
-     * This method sends the entire image in one operation, maintaining
-     * the original method behavior.
-     *
-     * @param image Bytes containing the image in ESC/POS format
-     * @return Fluent interface
-     * @throws EscPosConnectionException If the printer is not connected or data transmission fails
-     */
-    public EscPosPrinterCommands printImage(byte[] image) throws EscPosConnectionException {
-        return this.printImage(image, 0); // Default chunk size sends the entire image
     }
 
 
