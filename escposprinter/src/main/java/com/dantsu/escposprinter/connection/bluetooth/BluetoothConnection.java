@@ -35,6 +35,7 @@ public class BluetoothConnection extends DeviceConnection {
      *
      * @return an instance of BluetoothDevice
      */
+    @SuppressLint("MissingPermission")
     public BluetoothDevice getDevice() {
         return this.device;
     }
@@ -83,6 +84,7 @@ public class BluetoothConnection extends DeviceConnection {
     /**
      * Get bluetooth device UUID
      */
+    @SuppressLint("MissingPermission") // Suppress the Lint warning, but runtime checks are added
     protected UUID getDeviceUUID() {
         ParcelUuid[] uuids = device.getUuids();
         if (uuids != null && uuids.length > 0) {

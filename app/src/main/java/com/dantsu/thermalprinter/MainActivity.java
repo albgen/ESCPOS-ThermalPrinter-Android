@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BluetoothConnection selectedDevice;
 
+    @SuppressLint("MissingPermission")
     public void browseBluetoothDevice() {
         this.checkBluetoothPermissions(() -> {
             final BluetoothConnection[] bluetoothDevicesList = (new BluetoothPrintersConnections()).getList();
