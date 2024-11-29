@@ -208,6 +208,21 @@ public class EscPosPrinter extends EscPosPrinterSize {
     }
 
     /**
+     * Set the chunk size for printing images.
+     *
+     * @param chunkSize Number of bytes to send per chunk.
+     *                  Must be greater than 0, otherwise defaults to DEFAULT_CHUNK_SIZE 0 byte, means no chunking.
+     * @return Fluent interface
+     */
+    public EscPosPrinter setChunkSize(int chunkSize) {
+        if (this.printer == null) {
+            return this;
+        }
+        this.printer.setChunkSize(chunkSize);
+        return this;
+    }
+
+    /**
      * @return Charset encoding
      */
     public EscPosCharsetEncoding getEncoding() {

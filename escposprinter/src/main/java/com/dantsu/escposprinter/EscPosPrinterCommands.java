@@ -83,7 +83,7 @@ public class EscPosPrinterCommands {
     private EscPosCharsetEncoding charsetEncoding;
     private boolean useEscAsteriskCommand;
 
-    private static final int DEFAULT_CHUNK_SIZE = 32; // Default chunk size 32 bytes
+    private static final int DEFAULT_CHUNK_SIZE = 0;  // Default chunk size 0 bytes, means send without chunking
     private int chunkSize = DEFAULT_CHUNK_SIZE;       // Current chunk size with default
 
     public static byte[] initGSv0Command(int bytesByLine, int bitmapHeight) {
