@@ -80,6 +80,7 @@ public abstract class DeviceConnection {
                 Thread.sleep(waitingTime);
             }
         } catch (IOException | InterruptedException e) {
+            this.disconnect();
             e.printStackTrace();
             throw new EscPosConnectionException(e.getMessage());
         }
