@@ -81,6 +81,7 @@ public abstract class DeviceConnection {
             }
         } catch (IOException | InterruptedException e) {
             this.disconnect();
+            this.connect();
             e.printStackTrace();
             throw new EscPosConnectionException(e.getMessage());
         }
